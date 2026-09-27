@@ -2,9 +2,8 @@ from tkinter import *
 from tkinter import ttk
 
 
-# ==========================================================
-# TABELAS DAS CORES
-# ==========================================================
+# -------------------------------------------- TABELAS DAS CORES
+# Aqui ficam os valores que o programa precisa saber sobre cada cor.
 
 valores_cores = {
     "preto": 0,
@@ -18,6 +17,7 @@ valores_cores = {
     "cinza": 8,
     "branco": 9
 }
+
 
 multiplicadores = {
     "preto": 1,
@@ -34,6 +34,7 @@ multiplicadores = {
     "prata": 0.01
 }
 
+
 tolerancias = {
     "marrom": 1,
     "vermelho": 2,
@@ -45,6 +46,8 @@ tolerancias = {
     "prata": 10
 }
 
+
+# Usei hexadecimal para o desenho ficar mais parecido com as cores reais
 cores_visuais = {
     "preto": "black",
     "marrom": "#8B4513",
@@ -61,9 +64,8 @@ cores_visuais = {
 }
 
 
-# ==========================================================
-# FUNÇÃO PARA FORMATAR O RESULTADO
-# ==========================================================
+# --------------------------------------------------  FUNÇÃO PARA FORMATAR O RESULTADO
+# Essa função organiza como o valor aparece na tela.
 
 def formatar_resistencia(valor):
 
@@ -80,19 +82,20 @@ def formatar_resistencia(valor):
         return f"{valor:g} Ω"
 
 
-# ==========================================================
-# DESENHAR O RESISTOR
-# ==========================================================
+# --------------------------------------------------  DESENHAR O RESISTOR
+# Aqui eu monto o resistor visualmente usando o Canvas do Tkinter.
 
 def desenhar_resistor(cor1, cor2, cor3, cor4):
 
     canvas.delete("all")
 
-    # Fios
+
+    #Primeiro desenho os fios que ficam nas duas pontas
     canvas.create_line(30, 70, 120, 70, width=5, fill="#777777")
     canvas.create_line(400, 70, 490, 70, width=5, fill="#777777")
 
-    # Corpo
+
+    # Depois desenho o corpo do resistor
     canvas.create_rectangle(
         120, 35, 400, 105,
         fill="#F0DFA6",
@@ -100,23 +103,36 @@ def desenhar_resistor(cor1, cor2, cor3, cor4):
         width=2
     )
 
-    # Quatro bandas
-    canvas.create_rectangle(165, 35, 185, 105,
-                            fill=cor1, outline="")
 
-    canvas.create_rectangle(210, 35, 230, 105,
-                            fill=cor2, outline="")
+    # As quatro faixas representam os dados usados no cálculo
+    canvas.create_rectangle(
+        165, 35, 185, 105,
+        fill=cor1,
+        outline=""
+    )
 
-    canvas.create_rectangle(255, 35, 275, 105,
-                            fill=cor3, outline="")
+    canvas.create_rectangle(
+        210, 35, 230, 105,
+        fill=cor2,
+        outline=""
+    )
 
-    canvas.create_rectangle(335, 35, 355, 105,
-                            fill=cor4, outline="")
+    canvas.create_rectangle(
+        255, 35, 275, 105,
+        fill=cor3,
+        outline=""
+    )
+
+    canvas.create_rectangle(
+        335, 35, 355, 105,
+        fill=cor4,
+        outline=""
+    )
 
 
-# ==========================================================
-# CALCULAR PELAS CORES
-# ==========================================================
+# --------------------------------------------------------------  CALCULAR PELAS CORES
+
+# transformar as cores em um valor de resistência
 
 def calcular_por_cores():
 
@@ -125,23 +141,29 @@ def calcular_por_cores():
     multiplicador = banda3.get()
     tolerancia = banda4.get()
 
-    # Pega os valores das duas primeiras cores
+
+    # As duas primeiras faixas formam o número inicial
+    # Ex = 2 e 5 viram 25
     numero = valores_cores[cor1] * 10 + valores_cores[cor2]
 
-    # Aplica o multiplicador
+
+    # Aqui eu multiplico o número pelo valor da terceira faixa
     resistencia = numero * multiplicadores[multiplicador]
 
-    # Pega a tolerância
+
+    # A quarta faixa mostra a tolerância do resistor
     tolerancia_valor = tolerancias[tolerancia]
 
-    # Mostra o resultado
+
+    # Depois de calcular, mostro o resultado para o usuário
     resultado = formatar_resistencia(resistencia)
 
     resultado_label.config(
         text=f"Resistência: {resultado} ±{tolerancia_valor}%"
     )
 
-    # Desenha o resistor
+
+    # E atualizo o desenho para ficar igual às cores escolhidas.
     desenhar_resistor(
         cores_visuais[cor1],
         cores_visuais[cor2],
@@ -150,21 +172,26 @@ def calcular_por_cores():
     )
 
 
-# ==========================================================
-# CALCULAR AS CORES PELO VALOR
-# ==========================================================
+# ----------------------------------------------------------------  CALCULAR AS CORES PELO VALOR
+# Aqui faço o caminho inverso
+# o usuário informa o valor e o programa procura as cores
 
 def calcular_por_valor():
 
+    # Aceito vírgula ou ponto para facilitar a entrada do valor
     entrada = valor_entrada.get().replace(",", ".")
 
+
+    # Tento transformar o que foi digitado em número
     try:
         valor = float(entrada)
 
         if valor <= 0:
             raise ValueError
 
+
     except ValueError:
+
         resultado_label.config(
             text="Digite um valor válido.",
             fg="red"
@@ -173,7 +200,8 @@ def calcular_por_valor():
         canvas.delete("all")
         return
 
-    # Procura uma combinação de cores
+
+    # O programa testa as possibilidades usando os valores da tabela de cores
     for cor1, valor1 in valores_cores.items():
 
         for cor2, valor2 in valores_cores.items():
@@ -184,9 +212,11 @@ def calcular_por_valor():
 
                 resultado = numero * multiplicador
 
+
                 if resultado == valor:
 
                     tolerancia = tolerancia_entrada.get()
+
 
                     resultado_label.config(
                         text=f"Resistência: "
@@ -195,13 +225,16 @@ def calcular_por_valor():
                         fg="#222222"
                     )
 
-                    # Atualiza as caixas de seleção
+
+                    # Quando encontra, também coloco as cores
+                    # encontradas nos campos da tela
                     banda1.set(cor1)
                     banda2.set(cor2)
                     banda3.set(cor3)
                     banda4.set(tolerancia)
 
-                    # Desenha o resistor
+
+                    # Atualizo o desenho do resistor.
                     desenhar_resistor(
                         cores_visuais[cor1],
                         cores_visuais[cor2],
@@ -211,6 +244,7 @@ def calcular_por_valor():
 
                     return
 
+
     resultado_label.config(
         text="Não foi encontrada uma combinação.",
         fg="red"
@@ -219,21 +253,21 @@ def calcular_por_valor():
     canvas.delete("all")
 
 
-# ==========================================================
-# ESCOLHER O TIPO DE CÁLCULO
-# ==========================================================
+# ------------------------------------------------------------------  ESCOLHER O TIPO DE CÁLCULO
+# Essa função decide qual dos dois cálculos deve ser executado.
 
 def calcular():
 
+    # O StringVar guarda qual opção foi escolhida na tela
     if modo.get() == "cores":
         calcular_por_cores()
+
     else:
         calcular_por_valor()
 
 
-# ==========================================================
-# LIMPAR
-# ==========================================================
+# ------------------------------------------------------------------  LIMPAR
+# O botão limpar volta tudo para o estado inicial.
 
 def limpar():
 
@@ -243,7 +277,9 @@ def limpar():
     banda2.set("vermelho")
     banda3.set("laranja")
     banda4.set("ouro")
+
     tolerancia_entrada.set("ouro")
+
 
     resultado_label.config(
         text="Selecione as cores ou informe um valor.",
@@ -253,9 +289,8 @@ def limpar():
     canvas.delete("all")
 
 
-# ==========================================================
-# TROCAR O MODO
-# ==========================================================
+# ------------------------------------------------------------------   TROCAR O MODO
+# Aqui eu alterno entre os dois jeitos de usar a calculadora.
 
 def mudar_modo():
 
@@ -277,7 +312,9 @@ def mudar_modo():
             text="Calcular cores"
         )
 
+
     valor_entrada.delete(0, END)
+
 
     resultado_label.config(
         text="Selecione as cores ou informe um valor.",
@@ -287,9 +324,8 @@ def mudar_modo():
     canvas.delete("all")
 
 
-# ==========================================================
-# JANELA
-# ==========================================================
+# -------------------------------------------------------------  JANELA
+# A partir daqui começo a montar a interface do programa.
 
 janela = Tk()
 
@@ -299,9 +335,8 @@ janela.resizable(False, False)
 janela.configure(bg="#eef2f5")
 
 
-# ==========================================================
-# TÍTULO
-# ==========================================================
+# -------------------------------------------------------------- TÍTULO
+# Esse é o título que aparece no topo da janela.
 
 Label(
     janela,
@@ -316,9 +351,8 @@ Label(
 )
 
 
-# ==========================================================
-# PAINEL
-# ==========================================================
+# --------------------------------------------------------------- PAINEL
+# O painel serve para organizar os componentes da interface.
 
 painel = Frame(janela, bg="white")
 
@@ -330,9 +364,8 @@ painel.pack(
 )
 
 
-# ==========================================================
-# ESCOLHA DO MODO
-# ==========================================================
+# ---------------------------------------------------------------  ESCOLHA DO MODO
+# O usuário escolhe se quer começar pelas cores ou pelo valor.
 
 Label(
     painel,
@@ -347,6 +380,7 @@ Label(
 
 
 modo = StringVar(value="cores")
+
 
 frame_opcoes = Frame(painel, bg="white")
 frame_opcoes.pack(anchor="w", padx=10)
@@ -375,9 +409,8 @@ Radiobutton(
 )
 
 
-# ==========================================================
-# ÁREA DOS CAMPOS
-# ==========================================================
+# ---------------------------------------------------------  ÁREA DOS CAMPOS
+# Aqui fica a área que muda conforme o modo escolhido.
 
 frame_conteudo = Frame(
     painel,
@@ -394,9 +427,8 @@ frame_conteudo.pack(
 frame_conteudo.pack_propagate(False)
 
 
-# ==========================================================
-# CAMPOS DAS CORES
-# ==========================================================
+# -----------------------------------------------------------  CAMPOS DAS CORES
+# Esses campos permitem escolher as quatro faixas do resistor.
 
 frame_cores = Frame(
     frame_conteudo,
@@ -411,6 +443,7 @@ Label(
     text="Banda 1:",
     bg="white"
 ).grid(row=0, column=0)
+
 
 banda1 = ttk.Combobox(
     frame_cores,
@@ -429,6 +462,7 @@ Label(
     bg="white"
 ).grid(row=0, column=1)
 
+
 banda2 = ttk.Combobox(
     frame_cores,
     values=list(valores_cores.keys()),
@@ -445,6 +479,7 @@ Label(
     text="Multiplicador:",
     bg="white"
 ).grid(row=0, column=2)
+
 
 banda3 = ttk.Combobox(
     frame_cores,
@@ -463,6 +498,7 @@ Label(
     bg="white"
 ).grid(row=0, column=3)
 
+
 banda4 = ttk.Combobox(
     frame_cores,
     values=list(tolerancias.keys()),
@@ -474,14 +510,14 @@ banda4.set("ouro")
 banda4.grid(row=1, column=3, padx=(7, 0))
 
 
-# ==========================================================
-# CAMPO PARA INFORMAR O VALOR
-# ==========================================================
+# ----------------------------------------------------------------   CAMPO PARA INFORMAR O VALOR
+# Nesse modo, em vez das cores, o usuário digita o valor.
 
 frame_valor = Frame(
     frame_conteudo,
     bg="white"
 )
+
 
 Label(
     frame_valor,
@@ -522,9 +558,8 @@ tolerancia_entrada.set("ouro")
 tolerancia_entrada.pack(side=LEFT)
 
 
-# ==========================================================
-# BOTÕES
-# ==========================================================
+# ----------------------------------------------------------  BOTÕES
+# Aqui ficam os botões principais: calcular e limpar.
 
 frame_botoes = Frame(
     painel,
@@ -563,9 +598,8 @@ Button(
 )
 
 
-# ==========================================================
-# RESULTADO
-# ==========================================================
+# -------------------------------------------------------------   RESULTADO
+# Nesta parte aparece o resultado do cálculo.
 
 Label(
     painel,
@@ -594,10 +628,6 @@ resultado_label.pack(
 )
 
 
-# ==========================================================
-# DESENHO DO RESISTOR
-# ==========================================================
-
 canvas = Canvas(
     painel,
     width=525,
@@ -611,9 +641,5 @@ canvas.pack(
     pady=7
 )
 
-
-# ==========================================================
-# INICIAR PROGRAMA
-# ==========================================================
 
 janela.mainloop()
