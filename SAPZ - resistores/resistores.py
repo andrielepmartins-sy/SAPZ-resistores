@@ -181,8 +181,7 @@ def calcular_por_valor():
     # Aceito vírgula ou ponto para facilitar a entrada do valor
     entrada = valor_entrada.get().replace(",", ".")
 
-
-    # Tento transformar o que foi digitado em número
+    # tento transformar o que foi digitado em número
     try:
         valor = float(entrada)
 
@@ -201,7 +200,7 @@ def calcular_por_valor():
         return
 
 
-    # O programa testa as possibilidades usando os valores da tabela de cores
+#O programa testa as possibilidades usando os valores da tabela de cores
     for cor1, valor1 in valores_cores.items():
 
         for cor2, valor2 in valores_cores.items():
@@ -225,16 +224,15 @@ def calcular_por_valor():
                         fg="#222222"
                     )
 
-
-                    # Quando encontra, também coloco as cores
-                    # encontradas nos campos da tela
+# quando encontra, também coloco as cores
+  # encontradas nos campos da tela
                     banda1.set(cor1)
                     banda2.set(cor2)
                     banda3.set(cor3)
                     banda4.set(tolerancia)
 
 
-                    # Atualizo o desenho do resistor.
+    #atualizo o desenho do resistor
                     desenhar_resistor(
                         cores_visuais[cor1],
                         cores_visuais[cor2],
@@ -254,11 +252,13 @@ def calcular_por_valor():
 
 
 # ------------------------------------------------------------------  ESCOLHER O TIPO DE CÁLCULO
-# Essa função decide qual dos dois cálculos deve ser executado.
+
+
+# essa função decide qual dos dois cálculos deve ser executado
 
 def calcular():
 
-    # O StringVar guarda qual opção foi escolhida na tela
+# O StringVar guarda qual opção foi escolhida na tela
     if modo.get() == "cores":
         calcular_por_cores()
 
@@ -267,7 +267,7 @@ def calcular():
 
 
 # ------------------------------------------------------------------  LIMPAR
-# O botão limpar volta tudo para o estado inicial.
+# O botão limpar volta tudo para o estado inicial
 
 def limpar():
 
@@ -289,8 +289,8 @@ def limpar():
     canvas.delete("all")
 
 
-# ------------------------------------------------------------------   TROCAR O MODO
-# Aqui eu alterno entre os dois jeitos de usar a calculadora.
+# --------------------------------------------------------------------  TROCAR O MODO
+# Aqui eu alterno entre os dois jeitos de usar a calculadora
 
 def mudar_modo():
 
@@ -334,7 +334,6 @@ janela.geometry("570x480")
 janela.resizable(False, False)
 janela.configure(bg="#eef2f5")
 
-
 # -------------------------------------------------------------- TÍTULO
 # Esse é o título que aparece no topo da janela.
 
@@ -364,7 +363,7 @@ painel.pack(
 )
 
 
-# ---------------------------------------------------------------  ESCOLHA DO MODO
+# --------------------------------------------------------------- ESCOLHA DO MODO
 # O usuário escolhe se quer começar pelas cores ou pelo valor.
 
 Label(
@@ -409,7 +408,7 @@ Radiobutton(
 )
 
 
-# ---------------------------------------------------------  ÁREA DOS CAMPOS
+# ----------------------------------------------------------  ÁREA DOS CAMPOS
 # Aqui fica a área que muda conforme o modo escolhido.
 
 frame_conteudo = Frame(
@@ -510,7 +509,7 @@ banda4.set("ouro")
 banda4.grid(row=1, column=3, padx=(7, 0))
 
 
-# ----------------------------------------------------------------   CAMPO PARA INFORMAR O VALOR
+# ------------------------------------------------------------------ CAMPO PARA INFORMAR O VALOR
 # Nesse modo, em vez das cores, o usuário digita o valor.
 
 frame_valor = Frame(
@@ -598,7 +597,7 @@ Button(
 )
 
 
-# -------------------------------------------------------------   RESULTADO
+# --------------------------------------------------------------  RESULTADO
 # Nesta parte aparece o resultado do cálculo.
 
 Label(
