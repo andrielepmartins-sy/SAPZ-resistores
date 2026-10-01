@@ -3,7 +3,7 @@ from tkinter import ttk
 
 
 # -------------------------------------------- TABELAS DAS CORES
-# Aqui ficam os valores que o programa precisa saber sobre cada cor.
+# Aqui ficam os valores que o programa precisa saber sobre cada cor
 
 valores_cores = {
     "preto": 0,
@@ -46,7 +46,6 @@ tolerancias = {
     "prata": 10
 }
 
-
 # Usei hexadecimal para o desenho ficar mais parecido com as cores reais
 cores_visuais = {
     "preto": "black",
@@ -62,7 +61,6 @@ cores_visuais = {
     "ouro": "#D4AF37",
     "prata": "#C0C0C0"
 }
-
 
 # --------------------------------------------------  FUNÇÃO PARA FORMATAR O RESULTADO
 # Essa função organiza como o valor aparece na tela.
@@ -80,7 +78,6 @@ def formatar_resistencia(valor):
 
     else:
         return f"{valor:g} Ω"
-
 
 # --------------------------------------------------  DESENHAR O RESISTOR
 # Aqui eu monto o resistor visualmente usando o Canvas do Tkinter.
@@ -125,7 +122,6 @@ def desenhar_resistor(cor1, cor2, cor3, cor4):
         fill=cor4,
         outline=""
     )
-
 
 # ----------------------------------------------------------------  CALCULAR PELAS CORES
 
@@ -239,9 +235,7 @@ def calcular_por_valor():
 
     canvas.delete("all")
 
-
 # ------------------------------------------------------------------  ESCOLHER O TIPO DE CÁLCULO
-
 
 # essa função decide qual dos dois cálculos deve ser executado
 
@@ -253,7 +247,6 @@ def calcular():
 
     else:
         calcular_por_valor()
-
 
 # ------------------------------------------------------------------  LIMPAR
 # O botão limpar volta tudo para o estado inicial
@@ -275,7 +268,6 @@ def limpar():
     )
 
     canvas.delete("all")
-
 
 # --------------------------------------------------------------------  TROCAR O MODO
 # Aqui eu alterno entre os dois jeitos de usar a calculadora
@@ -323,7 +315,6 @@ janela.geometry("570x480")
 janela.resizable(False, False)
 janela.configure(bg="#eef2f5")
 
-
 # -------------------------------------------------------------- TÍTULO
 
 # Esse é o título que aparece no topo da janela.
@@ -340,7 +331,6 @@ Label(
     pady=(15, 7)
 )
 
-
 # --------------------------------------------------------------- PAINEL
 
 # O painel serve para organizar os componentes da interface.
@@ -353,7 +343,6 @@ painel.pack(
     padx=15,
     pady=(0, 15)
 )
-
 
 # --------------------------------------------------------------- ESCOLHA DO MODO
 
@@ -503,7 +492,6 @@ banda4 = ttk.Combobox(
 banda4.set("ouro")
 banda4.grid(row=1, column=3, padx=(7, 0))
 
-
 # ------------------------------------------------------------------ CAMPO PARA INFORMAR O VALOR
 
 # Nesse modo, em vez das cores, o usuário digita o valor.
@@ -512,7 +500,6 @@ frame_valor = Frame(
     frame_conteudo,
     bg="white"
 )
-
 
 Label(
     frame_valor,
@@ -531,7 +518,6 @@ valor_entrada.pack(
     padx=6
 )
 
-
 Label(
     frame_valor,
     text="Tolerância:",
@@ -540,7 +526,6 @@ Label(
     side=LEFT,
     padx=5
 )
-
 
 tolerancia_entrada = ttk.Combobox(
     frame_valor,
@@ -551,7 +536,6 @@ tolerancia_entrada = ttk.Combobox(
 
 tolerancia_entrada.set("ouro")
 tolerancia_entrada.pack(side=LEFT)
-
 
 # ----------------------------------------------------------  BOTÕES
 
@@ -568,7 +552,6 @@ frame_botoes.pack(
     pady=5
 )
 
-
 botao_calcular = Button(
     frame_botoes,
     text="Calcular resistência",
@@ -581,7 +564,6 @@ botao_calcular = Button(
 
 botao_calcular.pack(side=LEFT)
 
-
 Button(
     frame_botoes,
     text="Limpar",
@@ -592,7 +574,6 @@ Button(
     side=LEFT,
     padx=7
 )
-
 
 # --------------------------------------------------------------  RESULTADO
 
@@ -607,7 +588,6 @@ Label(
     anchor="w",
     padx=15
 )
-
 
 resultado_label = Label(
     painel,
@@ -624,7 +604,6 @@ resultado_label.pack(
     ipady=6
 )
 
-
 canvas = Canvas(
     painel,
     width=525,
@@ -637,6 +616,5 @@ canvas.pack(
     padx=15,
     pady=7
 )
-
 
 janela.mainloop()
